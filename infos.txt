@@ -1,0 +1,15 @@
+ip adresse vom pc = 10.15.253.7
+ip stream von kamera = rtsp://10.15.253.11/media/video1
+end stream: udp://239.0.1.1:1234
+
+express
+pn manager
+
+
+SERVER PROGRAMM
+	updatet alle 5 minuten die aktuellen logs als json beim eigenen server
+	neues file jeden tag
+	format: timestap: was gestreamt wird
+
+MAIN PROGRAMM
+	holt sich wenn es gestartet wird von allen 3 pcs die json und stellt sie dar
