@@ -16,10 +16,4 @@ MAIN PROGRAMM
 
 
 exceptions
-nodemon
-_res
-dependencies löschen
 mehrere clients auf einmal zugreifen
-
-
-server.js ->
