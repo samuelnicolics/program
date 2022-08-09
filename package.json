@@ -5,16 +5,17 @@
   "main": "client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "samuel",
   "license": "ISC",
   "dependencies": {
-    "fs": "^0.0.1-security",
-    "http": "^0.0.1-security",
     "node-cron": "^3.0.1",
     "uuid": "^8.3.2",
     "winston": "^3.8.1",
     "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }

@@ -12,7 +12,7 @@ serverlist.forEach(element => {
     method: 'GET'
   };
 
-  var req = http.request(options, function(res) {
+  var req = http.request(options, function(_res) {
     //console.log("statusCode: ", res.statusCode);
     //console.log("headers: ", res.headers);
 

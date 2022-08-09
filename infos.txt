@@ -13,3 +13,13 @@ SERVER PROGRAMM
 
 MAIN PROGRAMM
 	holt sich wenn es gestartet wird von allen 3 pcs die json und stellt sie dar
+
+
+exceptions
+nodemon
+_res
+dependencies löschen
+mehrere clients auf einmal zugreifen
+
+
+server.js ->
