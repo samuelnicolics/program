@@ -16,4 +16,4 @@ MAIN PROGRAMM
 
 
 exceptions
-mehrere clients auf einmal zugreifen
+jeden tag neues file erstellen (winston daily rotate)
