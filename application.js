@@ -29,5 +29,4 @@ serverlist.forEach(element => {
   req.on('error', function(e) {
     console.log(`${element} offline`)
   });
-
 });
