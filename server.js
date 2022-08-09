@@ -1,64 +1,57 @@
-const http = require("http");
+const express = require("express");
+const cors = require("cors");
 const fs = require('fs');
-const cron = require("node-cron");
 const winston = require('winston');
 require('winston-daily-rotate-file');
 
-const host = 'localhost';
-const port = 8000;
+const PORT = 8000;
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+let streamerStatus = {};
 
 //setup winston logger
- var transport = new winston.transports.DailyRotateFile({
-   level: 'info',
-   filename: '%DATE%.log',
-   datePattern: 'YYYY-MM-DD',
-   zippedArchive: true,
-   maxSize: '20m'
- });
- transport.on('rotate', function(oldFilename, newFilename) {
-   // do something fun
- });
- //format output
- const { combine, timestamp, printf, colorize, align } = winston.format;
-//create logger
- var logger = winston.createLogger({
-   level: process.env.LOG_LEVEL || 'info',
-   format: combine(
-     printf((info) => info.message)
-   ),
-   transports: [
-     transport
-   ]
- });
+var transport = new winston.transports.DailyRotateFile({
+  level: 'info',
+  filename: '%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
+  zippedArchive: true,
+  maxSize: '20m'
+});
+transport.on('rotate', function(oldFilename, newFilename) {
+  // do something fun
+});
 
-//log that server started
-logger.info(new Date().toLocaleString() + ": Server started");
 
-//every 5 minutes save stats and rewrite every day
-cron.schedule(`*/5 * * * *`, async function() {
-  //log that server is running
-  logger.info(new Date().toLocaleString() + ": Server running");
-})
+// bei einem post auf /data speicher die daten als file ab
+app.post("/data", (req, res) => {
+  
+  // !! speicher in ein config-file (JSON-format)
+  const data = req.body;
 
-//send stats at request
-const requestListener = function (req, res) {
+  const loggeddata = fs.readFileSync(new Date().toISOString().slice(0, 10)+".log");
+  const json = JSON.parse(loggeddata);
+  json.push(data);
 
-  //convert .log file to .csv
-  var filename = new Date().toISOString().slice(0, 10) + ".log";
-  fs.copyFile(filename, 'today.csv', (err) => {
-    if (err) throw err;
-  });
+  fs.writeFileSync(new Date().toISOString().slice(0, 10)+".log", JSON.stringify(json));
+  
+  //antworte der middleware
+  res.json({ status: "ok", message: "data received" });
+});
 
-  //send file from today to client
-  fs.readFile("today.csv", function(error, content) {
-    res.setHeader("Content-Disposition", "attachment;filename=today.csv");
-    res.setHeader("Content-Type", "text/csv");
-    res.writeHead(200);
-    res.end(content);
-  })
-}
+app.listen(PORT, () => {
+  console.log("Server running on port 8000");
+});
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+
+// wenn eine get request auf /streamer gemacht wird, schicke die gesammelten daten zurück:
+app.get("/streamer", (req, res) => {
+  console.log("Route /streamer touched");
+
+  // sammle alle daten von den streaming pc
+  var collectedData = JSON.parse(fs.readFileSync(new Date().toISOString().slice(0, 10)+".log", 'utf8'));
+  
+  res.json(collectedData);
 });
