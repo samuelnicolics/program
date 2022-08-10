@@ -1,0 +1,70 @@
+const express = require("express");
+const cors = require("cors");
+const winston = require('winston');
+require('winston-daily-rotate-file');
+const { readFileSync } = require('fs');
+
+
+const PORT = 8000;
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+let streamerStatus = {};
+
+//setup winston logger
+var transport = new winston.transports.DailyRotateFile({
+  level: 'info',
+  filename: 'logs/%DATE%.log',
+  datePattern: 'YYYY-MM-DD',
+  zippedArchive: true,
+  maxSize: '20m'
+});
+transport.on('rotate', function(oldFilename, newFilename) {
+  // do something fun
+});
+// format output
+const { combine, timestamp, printf, colorize, align } = winston.format;
+//create logger
+var logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: combine(
+    printf((info) => info.message)
+  ),
+  transports: [
+    transport
+  ]
+});
+
+// bei einem post auf /data speicher die daten als file ab
+app.post("/data", (req, res) => {
+  
+  // !! speicher in ein config-file (JSON-format)
+  const data = req.body;
+
+  logger.info(JSON.stringify(data));
+  
+  //antworte der middleware
+  res.json({ status: "ok", message: "data received" });
+});
+
+app.listen(PORT, () => {
+  console.log("Server running on port 8000");
+});
+
+
+// wenn eine get request auf /streamer gemacht wird, schicke die gesammelten daten zurück:
+app.get("/streamer", (req, res) => {
+  console.log("Route /streamer touched");
+
+  // sammle alle daten von den streaming pc
+  var collectedData = [];
+  const array = readFileSync("logs/"+new Date().toISOString().slice(0, 10)+".log").toString().replace(/\r\n/g,'\n').split('\n');
+  array.pop();
+
+  for(let i of array) {
+    collectedData.push(JSON.parse(i));
+  }
+  res.json(collectedData);
+});

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>W3.CSS Template</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="s-container s-theme s-padding" id="myHeader">
+    <div class="s-center">
+      <h1 class="s-xxxlarge s-animate-bottom">Application</h1>
+    </div>
+  </header>
+
+  <!-- Switch between Tabs -->
+  <div class="s-bar s-theme">
+    <button class="s-bar-item s-button testbtn s-padding-16" onclick="openCity(event,'London')">PC 1</button>
+    <button class="s-bar-item s-button testbtn s-padding-16" onclick="openCity(event,'Paris')">PC 2</button>
+    <button class="s-bar-item s-button testbtn s-padding-16" onclick="openCity(event,'Tokyo')">PC 3</button>
+  </div>
+
+  <!-- Server 1 -->
+  <div id="London" class="s-container city s-animate-opacity">
+    <div class="s-row-padding">
+      <div class="s-half">
+        <div class="s-card-4 s-container w333">
+          <h2>Stats</h2>
+          <ul>
+            <li>
+              <p id="timestamp"></p>
+            </li>
+            <li>
+              <p id="ostype"></p>
+            </li>
+            <li>
+              <p id="hostname"></p>
+            </li>
+            <li>
+              <p id="freemem"></p>
+            </li>
+            <li>
+              <p id="uptime"></p>
+            </li>
+            <br>
+          </ul>
+        </div>
+
+        <br>
+        <div class="s-card-4 s-container w333">
+          <h2 class="s-center">Action</h2>
+          <div class="s-center">
+            <br>
+            <a class="s-button s-theme">Button</a>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server 2 -->
+  <div id="Paris" class="s-container city s-animate-opacity">
+    <div class="s-row-padding">
+      <div class="s-half">
+        <div class="s-card-4 s-container w333">
+          <h2>Stats</h2>
+          <ul>
+            <li>
+              <p id="timestamp"></p>
+            </li>
+            <li>
+              <p id="ostype"></p>
+            </li>
+            <li>
+              <p id="hostname"></p>
+            </li>
+            <li>
+              <p id="freemem"></p>
+            </li>
+            <li>
+              <p id="uptime"></p>
+            </li>
+            <br>
+          </ul>
+        </div>
+
+        <br>
+        <div class="s-card-4 s-container w333">
+          <h2 class="s-center">Action</h2>
+          <div class="s-center">
+            <br>
+            <a class="s-button s-theme">Button</a>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server 3 -->
+  <div id="Tokyo" class="s-container city s-animate-opacity">
+    <div class="s-row-padding">
+      <div class="s-half">
+        <div class="s-card-4 s-container w333">
+          <h2>Stats</h2>
+          <ul>
+            <li>
+              <p id="timestamp"></p>
+            </li>
+            <li>
+              <p id="ostype"></p>
+            </li>
+            <li>
+              <p id="hostname"></p>
+            </li>
+            <li>
+              <p id="freemem"></p>
+            </li>
+            <li>
+              <p id="uptime"></p>
+            </li>
+            <br>
+          </ul>
+        </div>
+
+        <br>
+        <div class="s-card-4 s-container w333">
+          <h2 class="s-center">Action</h2>
+          <div class="s-center">
+            <br>
+            <a class="s-button s-theme">Button</a>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+</body>
+<script type="text/javascript" src="scripts.js"></script>
+
+</html>
