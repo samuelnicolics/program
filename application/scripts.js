@@ -10,29 +10,48 @@ function format(seconds) {
     return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
   }
 
-  // show stats for pc1
-  const timestampElement = document.getElementById("timestamp");
-  const ostypeElement = document.getElementById("ostype");
-  const hostnameElement = document.getElementById("hostname");
-  const freememElement = document.getElementById("freemem");
-  const uptimeElement = document.getElementById("uptime");
+// convert bytes to gb
+function bytesToSize(bytes) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes == 0) return '0 Byte';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+};
 
-  fetch("http://localhost:8000/streamer")
+
+  // show stats
+    fetch("http://localhost:8000/streamer")
     .then((response) => {
       return response.json();
     })
     .then((collectedData) => {
-      timestampElement.innerHTML = "Time: " + collectedData.slice(-1).pop().timestamp;
-      ostypeElement.innerHTML = "OS-Type: " + collectedData.slice(-1).pop().ostype;
-      hostnameElement.innerHTML = "Hostname: " + collectedData.slice(-1).pop().hostname;
-      freememElement.innerHTML = "Free Memory Space: " + collectedData.slice(-1).pop().freemem / 1073741824 + " GB";
-      uptimeElement.innerHTML = "Uptime: " + format(collectedData.slice(-1).pop().uptime);
+      //json durchgehen und "pc1" suchen und ausgeben
+      var pclist = [];
+      pclist[1] = collectedData.filter((item) => item.pc === "PC1");
+      pclist[2] = collectedData.filter((item) => item.pc === "PC2");
+      pclist[3] = collectedData.filter((item) => item.pc === "PC3");
+
+      pclist.forEach(element => {
+        const timestampElement = document.getElementById("timestamp"+element.slice(-1).pop().pc);
+        const ostypeElement = document.getElementById("ostype"+element.slice(-1).pop().pc);
+        const hostnameElement = document.getElementById("hostname"+element.slice(-1).pop().pc);
+        const freememElement = document.getElementById("freemem"+element.slice(-1).pop().pc);
+        const uptimeElement = document.getElementById("uptime"+element.slice(-1).pop().pc);
+
+        timestampElement.innerHTML = "Time: " + element.slice(-1).pop().timestamp;
+        ostypeElement.innerHTML = "OS-Type: " + element.slice(-1).pop().ostype;
+        hostnameElement.innerHTML = "Hostname: " + element.slice(-1).pop().hostname;
+        freememElement.innerHTML = "Free Memory Space: " + bytesToSize(element.slice(-1).pop().freemem);
+        uptimeElement.innerHTML = "Uptime: " + format(element.slice(-1).pop().uptime);
+      });      
     });
 
+  
+  
   // Tabs
-  function openCity(evt, cityName) {
+  function openTab(evt, pcName) {
     var i;
-    var x = document.getElementsByClassName("city");
+    var x = document.getElementsByClassName("tab");
     for (i = 0; i < x.length; i++) {
       x[i].style.display = "none";
     }
@@ -40,7 +59,7 @@ function format(seconds) {
     for (i = 0; i < x.length; i++) {
       activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
     }
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(pcName).style.display = "block";
     evt.currentTarget.className += " w3-dark-grey";
   }
 
