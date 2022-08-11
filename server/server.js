@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const winston = require('winston');
 require('winston-daily-rotate-file');
-const { readFileSync } = require('fs');
+const {
+  readFileSync
+} = require('fs');
 
 
 const PORT = 8000;
@@ -21,11 +23,17 @@ var transport = new winston.transports.DailyRotateFile({
   zippedArchive: true,
   maxSize: '20m'
 });
-transport.on('rotate', function(oldFilename, newFilename) {
+transport.on('rotate', function (oldFilename, newFilename) {
   // do something fun
 });
 // format output
-const { combine, timestamp, printf, colorize, align } = winston.format;
+const {
+  combine,
+  timestamp,
+  printf,
+  colorize,
+  align
+} = winston.format;
 //create logger
 var logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -37,16 +45,44 @@ var logger = winston.createLogger({
   ]
 });
 
-// bei einem post auf /data speicher die daten als file ab
+// bei einem post auf /data speicher die daten als file ab || mache post request an die middleware
 app.post("/data", (req, res) => {
-  
   // !! speicher in ein config-file (JSON-format)
   const data = req.body;
 
-  logger.info(JSON.stringify(data));
-  
-  //antworte der middleware
-  res.json({ status: "ok", message: "data received" });
+  if (data.type === "action") {
+    //post request zur middleware machen
+
+    const sendData = async () => {
+      try {
+        const response = await fetch("http://10.15.253.7:3000/action", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            "action: ": action
+          }),
+        });
+
+        const json = await response.json();
+
+        console.log(json);
+      } catch (error) {
+        console.log(error);
+      }
+
+      sendData();
+    }
+  } else if (data.type === "status") {
+    logger.info(JSON.stringify(data));
+
+    //antworte der middleware
+    res.json({
+      status: "ok",
+      message: "data received"
+    });
+  }
 });
 
 app.listen(PORT, () => {
@@ -60,10 +96,10 @@ app.get("/streamer", (req, res) => {
 
   // sammle alle daten von den streaming pc
   var collectedData = [];
-  const array = readFileSync("logs/"+new Date().toISOString().slice(0, 10)+".log").toString().replace(/\r\n/g,'\n').split('\n');
+  const array = readFileSync("logs/" + new Date().toISOString().slice(0, 10) + ".log").toString().replace(/\r\n/g, '\n').split('\n');
   array.pop();
 
-  for(let i of array) {
+  for (let i of array) {
     collectedData.push(JSON.parse(i));
   }
   res.json(collectedData);

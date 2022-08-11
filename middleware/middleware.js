@@ -5,7 +5,7 @@ const fetch = require ('cross-fetch');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-var serverpost = process.env.SERVERPOST || "http://localhost:8000/data";
+var serverpost = process.env.SERVERPOST || "http://10.15.253.6:8000/data";
 
 const app = express();
 
@@ -15,8 +15,9 @@ app.use(express.json());
 //send every 5 minutes os informations to server
 setInterval(() => {
   const data = {
+    type:"status",
     pc: "PC1",
-    timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+    timestamp: new Date().toLocaleString('de-AT', {timeZone: 'Europe/Vienna'}),
     freemem: os.freemem(),
     hostname: os.hostname(),
     ostype: os.type(),
@@ -44,6 +45,31 @@ setInterval(() => {
 
   sendData();
 }, 5000);
+
+
+
+// bei einem post auf /action führe die action aus
+app.post("/action", (req, res) => {
+  const data = req.body;
+
+
+  //antworte dem server
+  res.json({ status: "ok", message: "action received" });
+
+  //action ausführen
+  var exec = require('child_process').exec;
+  var child;
+  
+  child = exec(data.action,
+     function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+            console.log('exec error: ' + error);
+        }
+     });
+});
+
 
 //log that server started
 app.listen(PORT, () => {
