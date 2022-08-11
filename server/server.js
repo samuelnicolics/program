@@ -52,7 +52,7 @@ app.post("/data", (req, res) => {
 
   if (data.type === "action") {
     //post request zur middleware machen
-
+    console.log("action received");
     const sendData = async () => {
       try {
         const response = await fetch("http://10.15.253.7:3000/action", {

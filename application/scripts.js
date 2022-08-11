@@ -55,17 +55,22 @@
       pclist[3] = collectedData.filter((item) => item.pc === "PC3");
 
       pclist.forEach(element => {
-        const timestampElement = document.getElementById("timestamp" + element.slice(-1).pop().pc);
-        const ostypeElement = document.getElementById("ostype" + element.slice(-1).pop().pc);
-        const hostnameElement = document.getElementById("hostname" + element.slice(-1).pop().pc);
-        const freememElement = document.getElementById("freemem" + element.slice(-1).pop().pc);
-        const uptimeElement = document.getElementById("uptime" + element.slice(-1).pop().pc);
+        if(element.length == 0){
+          console.log("no data");
+        }
+        else{
+          const timestampElement = document.getElementById("timestamp" + element.slice(-1).pop().pc);
+          const ostypeElement = document.getElementById("ostype" + element.slice(-1).pop().pc);
+          const hostnameElement = document.getElementById("hostname" + element.slice(-1).pop().pc);
+          const freememElement = document.getElementById("freemem" + element.slice(-1).pop().pc);
+          const uptimeElement = document.getElementById("uptime" + element.slice(-1).pop().pc);
 
-        timestampElement.innerHTML = "Time: " + element.slice(-1).pop().timestamp;
-        ostypeElement.innerHTML = "OS-Type: " + element.slice(-1).pop().ostype;
-        hostnameElement.innerHTML = "Hostname: " + element.slice(-1).pop().hostname;
-        freememElement.innerHTML = "Free Memory Space: " + bytesToSize(element.slice(-1).pop().freemem);
-        uptimeElement.innerHTML = "Uptime: " + format(element.slice(-1).pop().uptime);
+          timestampElement.innerHTML = "Time: " + element.slice(-1).pop().timestamp;
+          ostypeElement.innerHTML = "OS-Type: " + element.slice(-1).pop().ostype;
+          hostnameElement.innerHTML = "Hostname: " + element.slice(-1).pop().hostname;
+          freememElement.innerHTML = "Free Memory Space: " + bytesToSize(element.slice(-1).pop().freemem);
+          uptimeElement.innerHTML = "Uptime: " + format(element.slice(-1).pop().uptime);
+        }
       });
     });
 

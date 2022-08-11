@@ -1,0 +1,49 @@
+anleitung schreiben:
+
+post request von anwendung -> server, server verarbeitet request und schickt einen command über post request -> middleware
+
+
+start service kamera
+	-service
+	-stoppe vllt das standbild
+	-starte service
+
+start service standbild
+	-service schreiben
+	-stoppe vllt kamera
+	-starte service
+	ffmpeg -loop 1 -i <Name des Bildes> -f mpegts udp://239.0.1.1:1234
+
+zeige letzten logs von middleware / status des services
+
+
+
+
+
+pm manager
+
+	autostart: pm manager start middleware.js
+	falls bei middleware empfange dass ein befehl gemacht werden soll
+	schicke befehl
+	mit server schicke ich befehl zum restarten, service info, etc. an pm manager
+
+
+middleware logs mitschicken & alle logs ausgeben
+
+
+datenbank mit mongodb
+frontend mit react
+
+
+
+
+
+
+
+
+verwaltung: pm manager
+backend: nodejs
+database: mongodb
+frontend: html, css, js, react
+sftp://10.15.253.7:22 - streamere04:admin123
+

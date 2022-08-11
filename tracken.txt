@@ -1,0 +1,8 @@
+unter ~/Desktop vom hosting-server befindet sich im ordner middleware eine .env datei, innerhalb dieser kann
+		der port der middleware sowie der
+		zentralen server zu dem die daten periodisch gesendet werden, festgelegt werden.
+
+
+
+auf dem hosting-server muss der process manager 2 installiert werden
+$ npm install pm2 -g
