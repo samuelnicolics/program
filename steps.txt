@@ -43,7 +43,7 @@ frontend mit react
 
 verwaltung: pm manager
 backend: nodejs
-database: mongodb
+database: mongodb - https://www.w3schools.com/nodejs/nodejs_mongodb.asp
 frontend: html, css, js, react
 sftp://10.15.253.7:22 - streamere04:admin123
 
