@@ -19,16 +19,18 @@
   };
 
   // make post request to server
-  function sendAction(action) {
+  var serverurl =  "http://10.15.253.6:8000";
+
+  function sendAction(pc,action) {
     const sendData = async () => {
     try {
-      const response = await fetch("http://10.15.253.6:8000/data", {
+      const response = await fetch(serverurl + "/data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          "action: ": action
+          type: "action", pc, action
         }),
       });
 
@@ -43,7 +45,7 @@
   }
 
   // show stats
-  fetch("http://localhost:8000/streamer")
+  fetch(serverurl + "/streamer")
     .then((response) => {
       return response.json();
     })
@@ -55,7 +57,7 @@
       pclist[3] = collectedData.filter((item) => item.pc === "PC3");
 
       pclist.forEach(element => {
-        if(element.length == 0){
+        if(element.length === 0){
           console.log("no data");
         }
         else{

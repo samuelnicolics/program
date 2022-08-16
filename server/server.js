@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const fetch = require ('cross-fetch');
 const winston = require('winston');
 require('winston-daily-rotate-file');
 const {
@@ -45,43 +46,39 @@ var logger = winston.createLogger({
   ]
 });
 
-// bei einem post auf /data speicher die daten als file ab || mache post request an die middleware
+// bei einem post auf /data speicher die daten als file ab || mache post request an eine middleware (command)
+var middlewareUrls = {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
+
 app.post("/data", (req, res) => {
   // !! speicher in ein config-file (JSON-format)
   const data = req.body;
 
   if (data.type === "action") {
-    //post request zur middleware machen
-    console.log("action received");
+    //post request zur middleware machen    
     const sendData = async () => {
       try {
-        const response = await fetch("http://10.15.253.7:3000/action", {
+        const response = await fetch(middlewareUrls[data.pc]+"/action", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            "action: ": action
+            action: data.action
           }),
         });
 
         const json = await response.json();
-
         console.log(json);
       } catch (error) {
         console.log(error);
       }
-
-      sendData();
     }
+    sendData();
   } else if (data.type === "status") {
     logger.info(JSON.stringify(data));
 
     //antworte der middleware
-    res.json({
-      status: "ok",
-      message: "data received"
-    });
+    res.json({status: "ok", message: "data received"});
   }
 });
 

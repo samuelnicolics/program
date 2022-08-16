@@ -2,7 +2,7 @@ anleitung schreiben:
 
 post request von anwendung -> server, server verarbeitet request und schickt einen command über post request -> middleware
 
-error log, pcs dynamisch html, mongodb dynamisch, action: action fixen
+pcs dynamisch html, mongodb dynamisch
 
 start service kamera
 	-service
@@ -34,6 +34,10 @@ middleware logs mitschicken & alle logs ausgeben
 
 datenbank mit mongodb
 frontend mit react
+
+
+
+
 
 
 

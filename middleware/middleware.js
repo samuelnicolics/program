@@ -48,27 +48,51 @@ setInterval(() => {
 
 
 
-// bei einem post auf /action führe die action aus
+// bei einem post auf /action führe den command / action aus
 app.post("/action", (req, res) => {
   const data = req.body;
-
-
-  //antworte dem server
-  res.json({ status: "ok", message: "action received" });
-
+  console.log("action: " + data);
   //action ausführen
   var exec = require('child_process').exec;
   var child;
-  
-  child = exec(data.action,
-     function (error, stdout, stderr) {
+  switch (data.action) {
+    case "restartMiddlewareSkript":
+      child = exec('pm2 restart ~/Desktop/middleware/middleware.js', function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
         console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
+        if (error === null) {
+          res.json({ status: "ok", message: "action received" });
         }
-     });
-});
+        else{
+          res.json({ status: "error", message: error });
+        }
+      });
+      break;
+    case "startStandbild":
+      child = exec('sudo -S systemctl stop startkamera' && 'sudo -S systemctl start startstandbild', function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error === null) {
+          res.json({ status: "ok", message: "action received" });
+        }
+        else{
+          res.json({ status: "error", message: error });
+        }
+      });
+      break;
+      case "startStream":
+        child = exec('sudo -S systemctl stop startstandbild' && 'sudo -S systemctl start startkamera', function (error, stdout, stderr) {
+          console.log('stdout: ' + stdout);
+          console.log('stderr: ' + stderr);
+          if (error === null) {
+            res.json({ status: "ok", message: "action received" });
+          }
+          else{
+            res.json({ status: "error", message: error });
+          }
+        });
+        break;
+  }});
 
 
 //log that server started
