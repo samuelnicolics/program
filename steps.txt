@@ -2,6 +2,7 @@ anleitung schreiben:
 
 post request von anwendung -> server, server verarbeitet request und schickt einen command über post request -> middleware
 
+error log, pcs dynamisch html, mongodb dynamisch, action: action fixen
 
 start service kamera
 	-service
@@ -45,5 +46,3 @@ verwaltung: pm manager
 backend: nodejs
 database: mongodb
 frontend: html, css, js, react
-sftp://10.15.253.7:22 - streamere04:admin123
-

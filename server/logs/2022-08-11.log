@@ -189,3 +189,4 @@
 {"type":"status","pc":"PC1","timestamp":"11.8.2022, 16:35:54","freemem":2356084736,"hostname":"streamere04","ostype":"Linux","uptime":23326}
 {"type":"status","pc":"PC1","timestamp":"11.8.2022, 16:35:59","freemem":2356084736,"hostname":"streamere04","ostype":"Linux","uptime":23331}
 {"type":"status","pc":"PC1","timestamp":"11.8.2022, 16:36:04","freemem":2356051968,"hostname":"streamere04","ostype":"Linux","uptime":23336}
+{"type":"status","pc":"PC1","timestamp":"11.8.2022, 16:36:09","freemem":2356051968,"hostname":"streamere04","ostype":"Linux","uptime":23341}
