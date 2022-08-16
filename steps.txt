@@ -38,10 +38,6 @@ frontend mit react
 
 
 
-
-
-
-
 verwaltung: pm manager
 backend: nodejs
 database: mongodb
