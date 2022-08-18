@@ -54,33 +54,38 @@ app.post("/data", (req, res) => {
   const data = req.body;
 
   if (data.type === "action") {
-    //post request zur middleware machen    
+    //post request zur middleware machen
     const sendData = async () => {
       try {
-        const response = await fetch(middlewareUrls[data.pc]+"/action", {
+        const response = await fetch(middlewareUrls[data.pc] + "/action", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             action: data.action
-          }),
+          })
         });
 
+        console.log("sent action to middleware: " + data.action);
         const json = await response.json();
         console.log(json);
+        
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     sendData();
   } else if (data.type === "status") {
     logger.info(JSON.stringify(data));
 
     //antworte der middleware
-    res.json({status: "ok", message: "data received"});
+    res.json({
+      status: "ok",
+      message: "data received"
+    });
   }
-});
+  });
 
 app.listen(PORT, () => {
   console.log("Server running on port 8000");

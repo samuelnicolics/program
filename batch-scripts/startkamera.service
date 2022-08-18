@@ -1,0 +1,14 @@
+[Unit]
+Description=Kamera service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/home/streamere04/bin/start_kamera.sh
+TimeoutSec=30
+Restart=on-failure
+RestartSec=30
+User=streamere04
+
+[Install]
+WantedBy=multi-user.target

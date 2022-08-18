@@ -44,55 +44,75 @@ setInterval(() => {
   };
 
   sendData();
-}, 5000);
+  }, 5000);
 
 
 
 // bei einem post auf /action führe den command / action aus
 app.post("/action", (req, res) => {
   const data = req.body;
-  console.log("action: " + data);
   //action ausführen
   var exec = require('child_process').exec;
-  var child;
+  
   switch (data.action) {
     case "restartMiddlewareSkript":
-      child = exec('pm2 restart ~/Desktop/middleware/middleware.js', function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error === null) {
-          res.json({ status: "ok", message: "action received" });
+      exec('pm2 restart middleware', (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          return;
         }
-        else{
-          res.json({ status: "error", message: error });
+        if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
         }
+        console.log(`stdout: ${stdout}`);
       });
       break;
-    case "startStandbild":
-      child = exec('sudo -S systemctl stop startkamera' && 'sudo -S systemctl start startstandbild', function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error === null) {
-          res.json({ status: "ok", message: "action received" });
+
+      //case "startStandbild" führe einen command aus
+      case "startStandbild":
+        exec('sudo systemctl stop startkamera && sudo systemctl start startstandbild', (error, stdout, stderr) => {
+          if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+          }
+          if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+          }
+          console.log(`stdout: ${stdout}`);
         }
-        else{
-          res.json({ status: "error", message: error });
-        }
-      });
-      break;
+        );
+        break;
+
       case "startStream":
-        child = exec('sudo -S systemctl stop startstandbild' && 'sudo -S systemctl start startkamera', function (error, stdout, stderr) {
-          console.log('stdout: ' + stdout);
-          console.log('stderr: ' + stderr);
-          if (error === null) {
-            res.json({ status: "ok", message: "action received" });
+        exec('sudo -S systemctl stop startstandbild && sudo -S systemctl start startkamera', (error, stdout, stderr) => {
+          if (error) {
+            console.log(`error: ${error.message}`);
+            return;
           }
-          else{
-            res.json({ status: "error", message: error });
+          if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
           }
+          console.log(`stdout: ${stdout}`);
         });
         break;
-  }});
+    case "startStream":
+      exec('sudo -S systemctl stop startstandbild && sudo -S systemctl start startkamera', (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+      });
+      break;
+  }
+  });
 
 
 //log that server started
