@@ -1,29 +1,31 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require ('cross-fetch');
+require('dotenv').config();
 const winston = require('winston');
 require('winston-daily-rotate-file');
 const {
   readFileSync
 } = require('fs');
 
-
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const app = express();
+var filenameLogsVar = process.env.FILENAME_LOGS || 'logs/%DATE%.log';
+var datePatternVar = process.env.DATEPATTERN || "YYYY-MM-DD";
+var maxSizeVar = process.env.MAX_SIZE || "20m";
 
 app.use(cors());
 app.use(express.json());
 
-let streamerStatus = {};
-
 //setup winston logger
 var transport = new winston.transports.DailyRotateFile({
+  filename: filenameLogsVar,
+  datePattern: datePatternVar,
+  maxSize: maxSizeVar,
   level: 'info',
-  filename: 'logs/%DATE%.log',
-  datePattern: 'YYYY-MM-DD',
   zippedArchive: true,
-  maxSize: '20m'
 });
+
 transport.on('rotate', function (oldFilename, newFilename) {
   // do something fun
 });
@@ -47,7 +49,7 @@ var logger = winston.createLogger({
 });
 
 // bei einem post auf /data speicher die daten als file ab || mache post request an eine middleware (command)
-var middlewareUrls = {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
+var middlewareUrls = process.env.MIDDLEWAREURL || {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
 
 app.post("/data", (req, res) => {
   // !! speicher in ein config-file (JSON-format)

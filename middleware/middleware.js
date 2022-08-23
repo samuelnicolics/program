@@ -6,6 +6,9 @@ require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 var serverpost = process.env.SERVERPOST || "http://10.15.253.6:8000/data";
+var interval = process.env.UPDATE_INTERVAL || 5000;
+var pcName = process.env.PC_NAME || "PC1";
+var timeZ = process.env.TIME_ZONE || 'Europe/Vienna';
 
 const app = express();
 
@@ -14,13 +17,14 @@ app.use(express.json());
 
 var serviceKamera = "";
 var serviceStandbild = "";
+
 //send every 5 minutes os informations to server
 setInterval(() => {
   getActiveService();
   const data = {
     type:"status",
-    pc: "PC1",
-    timestamp: new Date().toLocaleString('de-AT', {timeZone: 'Europe/Vienna'}),
+    pc: pcName,
+    timestamp: new Date().toLocaleString('de-AT', {timeZone: timeZ}),
     freemem: os.freemem(),
     hostname: os.hostname(),
     ostype: os.type(),
@@ -49,7 +53,7 @@ setInterval(() => {
   };
 
   sendData();
-  }, 5000);
+  },  interval);
 
 function getActiveService(){
   var exec = require('child_process').exec;

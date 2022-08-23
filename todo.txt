@@ -3,8 +3,7 @@ frontend mit react
 
 datenbank mit mongodb (mongoose)
 
-alle hardgecodeten infos wie ip, port -> .env
-
+css aufräumen
 
 -------------------------------
 verwaltung: pm manager
