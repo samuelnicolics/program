@@ -4,7 +4,9 @@ frontend mit react
 css aufräumen
 
 -------------------------------
-verwaltung: pm manager
-backend: nodejs
 database: mongodb
-frontend: html, css, js, react
+server: express
+frontend: react, html, css, js
+backend: nodejs
+
+verwaltung: pm manager
