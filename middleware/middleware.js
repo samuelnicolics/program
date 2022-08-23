@@ -12,8 +12,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+var serviceKamera = "";
+var serviceStandbild = "";
 //send every 5 minutes os informations to server
 setInterval(() => {
+  getActiveService();
   const data = {
     type:"status",
     pc: "PC1",
@@ -21,7 +24,9 @@ setInterval(() => {
     freemem: os.freemem(),
     hostname: os.hostname(),
     ostype: os.type(),
-    uptime: os.uptime()
+    uptime: os.uptime(),
+    serviceKamera: serviceKamera,
+    serviceStandbild: serviceStandbild
     };
 
   //send data to the server
@@ -46,16 +51,29 @@ setInterval(() => {
   sendData();
   }, 5000);
 
-
+function getActiveService(){
+  var exec = require('child_process').exec;
+    function User(cmd, callback) {
+      exec('systemctl --no-pager status startkamera | grep active && systemctl --no-pager status startstandbild | grep active', function (error, stdout) {
+        return callback(null, stdout);
+      });
+  }
+  
+  User('whoami', function(err, callback){
+    //log callback to console delete everything except active or inactive
+    serviceKamera = callback.split(" ")[6];
+    serviceStandbild = callback.split("\n")[1].split(" ")[6];
+  });
+}
 
 // bei einem post auf /action führe den command / action aus
 app.post("/action", (req, res) => {
   const data = req.body;
+  
   //action ausführen
   var exec = require('child_process').exec;
-  
   switch (data.action) {
-    case "restartMiddlewareSkript":
+      case "restartMiddlewareSkript":
       exec('pm2 restart middleware', (error, stdout, stderr) => {
         if (error) {
           console.log(`error: ${error.message}`);
@@ -69,9 +87,8 @@ app.post("/action", (req, res) => {
       });
       break;
 
-      //case "startStandbild" führe einen command aus
       case "startStandbild":
-        exec('sudo systemctl stop startkamera && sudo systemctl start startstandbild', (error, stdout, stderr) => {
+        exec('sudo -S /bin/systemctl stop startkamera.service && sudo -S /bin/systemctl start startstandbild.service', (error, stdout, stderr) => {
           if (error) {
             console.log(`error: ${error.message}`);
             return;
@@ -86,7 +103,7 @@ app.post("/action", (req, res) => {
         break;
 
       case "startStream":
-        exec('sudo -S systemctl stop startstandbild && sudo -S systemctl start startkamera', (error, stdout, stderr) => {
+        exec('sudo -S /bin/systemctl stop startstandbild.service && sudo -S /bin/systemctl start startkamera.service', (error, stdout, stderr) => {
           if (error) {
             console.log(`error: ${error.message}`);
             return;
@@ -98,21 +115,8 @@ app.post("/action", (req, res) => {
           console.log(`stdout: ${stdout}`);
         });
         break;
-    case "startStream":
-      exec('sudo -S systemctl stop startstandbild && sudo -S systemctl start startkamera', (error, stdout, stderr) => {
-        if (error) {
-          console.log(`error: ${error.message}`);
-          return;
-        }
-        if (stderr) {
-          console.log(`stderr: ${stderr}`);
-          return;
-        }
-        console.log(`stdout: ${stdout}`);
-      });
-      break;
-  }
-  });
+  
+    }  });
 
 
 //log that server started

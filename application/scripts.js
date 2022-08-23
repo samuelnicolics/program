@@ -66,16 +66,20 @@
           const hostnameElement = document.getElementById("hostname" + element.slice(-1).pop().pc);
           const freememElement = document.getElementById("freemem" + element.slice(-1).pop().pc);
           const uptimeElement = document.getElementById("uptime" + element.slice(-1).pop().pc);
+          const serviceKameraElement = document.getElementById("serviceKamera" + element.slice(-1).pop().pc);
+          const serviceStandbildElement = document.getElementById("serviceStandbild" + element.slice(-1).pop().pc);
 
           timestampElement.innerHTML = "Time: " + element.slice(-1).pop().timestamp;
           ostypeElement.innerHTML = "OS-Type: " + element.slice(-1).pop().ostype;
           hostnameElement.innerHTML = "Hostname: " + element.slice(-1).pop().hostname;
           freememElement.innerHTML = "Free Memory Space: " + bytesToSize(element.slice(-1).pop().freemem);
           uptimeElement.innerHTML = "Uptime: " + format(element.slice(-1).pop().uptime);
+          serviceKameraElement.innerHTML = "Stream: " + element.slice(-1).pop().serviceKamera;
+          serviceStandbildElement.innerHTML = "Standbild: " + element.slice(-1).pop().serviceStandbild;
+
         }
       });
     });
-
 
 
   // Tabs
@@ -95,3 +99,8 @@
 
   var mybtn = document.getElementsByClassName("testbtn")[0];
   mybtn.click();
+
+//refresh every 10 seconds
+  setTimeout(function(){
+    window.location.reload();
+ }, 10000);

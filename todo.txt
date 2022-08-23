@@ -1,0 +1,13 @@
+frontend mit react
+    pcs hinzufügen über application (dynamisch)
+
+datenbank mit mongodb (mongoose)
+
+alle hardgecodeten infos wie ip, port -> .env
+
+
+-------------------------------
+verwaltung: pm manager
+backend: nodejs
+database: mongodb
+frontend: html, css, js, react

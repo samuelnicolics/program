@@ -3759,3 +3759,12 @@
 {"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:29","freemem":3106598912,"hostname":"streamere04","ostype":"Linux","uptime":14061}
 {"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:34","freemem":3106729984,"hostname":"streamere04","ostype":"Linux","uptime":14066}
 {"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:39","freemem":3106795520,"hostname":"streamere04","ostype":"Linux","uptime":14071}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:44","freemem":3106795520,"hostname":"streamere04","ostype":"Linux","uptime":14076}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:49","freemem":3106664448,"hostname":"streamere04","ostype":"Linux","uptime":14081}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:54","freemem":3106439168,"hostname":"streamere04","ostype":"Linux","uptime":14086}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:57:59","freemem":3106140160,"hostname":"streamere04","ostype":"Linux","uptime":14091}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:58:04","freemem":3106312192,"hostname":"streamere04","ostype":"Linux","uptime":14096}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:58:09","freemem":3106082816,"hostname":"streamere04","ostype":"Linux","uptime":14101}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:58:14","freemem":3106115584,"hostname":"streamere04","ostype":"Linux","uptime":14106}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:58:19","freemem":3106213888,"hostname":"streamere04","ostype":"Linux","uptime":14111}
+{"type":"status","pc":"PC1","timestamp":"18.8.2022, 15:58:24","freemem":3106213888,"hostname":"streamere04","ostype":"Linux","uptime":14116}
