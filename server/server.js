@@ -1,52 +1,20 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require ('cross-fetch');
+var mongo = require('mongodb');
 require('dotenv').config();
-const winston = require('winston');
-require('winston-daily-rotate-file');
-const {
-  readFileSync
-} = require('fs');
+const {readFileSync} = require('fs');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
-var filenameLogsVar = process.env.FILENAME_LOGS || 'logs/%DATE%.log';
-var datePatternVar = process.env.DATEPATTERN || "YYYY-MM-DD";
-var maxSizeVar = process.env.MAX_SIZE || "20m";
+
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
+
 
 app.use(cors());
 app.use(express.json());
-
-//setup winston logger
-var transport = new winston.transports.DailyRotateFile({
-  filename: filenameLogsVar,
-  datePattern: datePatternVar,
-  maxSize: maxSizeVar,
-  level: 'info',
-  zippedArchive: true,
-});
-
-transport.on('rotate', function (oldFilename, newFilename) {
-  // do something fun
-});
-// format output
-const {
-  combine,
-  timestamp,
-  printf,
-  colorize,
-  align
-} = winston.format;
-//create logger
-var logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
-  format: combine(
-    printf((info) => info.message)
-  ),
-  transports: [
-    transport
-  ]
-});
 
 // bei einem post auf /data speicher die daten als file ab || mache post request an eine middleware (command)
 var middlewareUrls = process.env.MIDDLEWAREURL || {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
@@ -79,7 +47,19 @@ app.post("/data", (req, res) => {
     };
     sendData();
   } else if (data.type === "status") {
-    logger.info(JSON.stringify(data));
+    //logger.info(JSON.stringify(data));
+
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("mydb");
+
+      dbo.collection("stats").insertOne(data, function(err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        db.close();
+      });
+    }); 
+
 
     //antworte der middleware
     res.json({
@@ -99,12 +79,13 @@ app.get("/streamer", (req, res) => {
   console.log("Route /streamer touched");
 
   // sammle alle daten von den streaming pc
-  var collectedData = [];
-  const array = readFileSync("logs/" + new Date().toISOString().slice(0, 10) + ".log").toString().replace(/\r\n/g, '\n').split('\n');
-  array.pop();
-
-  for (let i of array) {
-    collectedData.push(JSON.parse(i));
-  }
-  res.json(collectedData);
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mydb");
+    dbo.collection("stats").find({},{_id:0}).toArray(function(err, result) {
+      if (err) throw err;
+      res.json(result);
+      db.close();
+    });
+  });
 });

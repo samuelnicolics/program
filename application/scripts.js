@@ -50,6 +50,8 @@
       return response.json();
     })
     .then((collectedData) => {
+
+      console.log(collectedData)
       //json durchgehen und "pc" suchen und ausgeben
       var pclist = [];
       pclist[1] = collectedData.filter((item) => item.pc === "PC1");

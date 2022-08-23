@@ -1,8 +1,6 @@
 frontend mit react
     pcs hinzufügen über application (dynamisch)
 
-datenbank mit mongodb (mongoose)
-
 css aufräumen
 
 -------------------------------
