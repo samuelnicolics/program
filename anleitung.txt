@@ -1,54 +1,62 @@
-unter ~/Desktop vom der middleware befindet sich im ordner middleware eine .env datei, innerhalb dieser kann
-		der port der middleware sowie der
-		zentralen server zu dem die daten periodisch gesendet werden, festgelegt werden.
+MIDDLEWARE:
+
+	unter ~/Desktop vom der middleware befindet sich im ordner middleware eine .env datei, innerhalb dieser kann
+			der port der middleware sowie der
+			zentralen server zu dem die daten periodisch gesendet werden, festgelegt werden.
 
 
-auf dem middleware-pc muss der process manager 2 installiert werden
-	
-	$ npm install pm2 -g
+	auf dem middleware-pc muss der process manager 2 installiert werden
+		
+		$ npm install pm2 -g
 
-mithilfe von "pm2 start ~/Desktop/middleware" startet man das nodejs programm
-mithilfe von "pm2 monit middleware" kann man das nodejs programm überwachen
-mihilfe von "pm2 stop middleware" kann man das nodejs programm schließen
-mithilfe von "pm2 restart middleware" kann man das nodejs programm neu starten
-auf der middleware muss unter /etc/sudoers.d/ eine neue berechtigung gesetzt werden mithilfe von visudo
-	
-	$ sudo visudo /etc/sudoers.d/allowsystemctl
+	mithilfe von "pm2 start ~/Desktop/middleware" startet man das nodejs programm
+	mithilfe von "pm2 monit middleware" kann man das nodejs programm überwachen
+	mihilfe von "pm2 stop middleware" kann man das nodejs programm schließen
+	mithilfe von "pm2 restart middleware" kann man das nodejs programm neu starten
+	auf der middleware muss unter /etc/sudoers.d/ eine neue berechtigung gesetzt werden mithilfe von visudo
+		
+		$ sudo visudo /etc/sudoers.d/allowsystemctl
 
-in diesem file soll folgende codezeile eingefügt werden:
+	in diesem file soll folgende codezeile eingefügt werden:
 
-	user ALL= NOPASSWD: /bin/systemctl stop startkamera.service
-	user ALL= NOPASSWD: /bin/systemctl start startkamera.service
-	user ALL= NOPASSWD: /bin/systemctl stop startstandbild.service
-	user ALL= NOPASSWD: /bin/systemctl start startstandbild.service
-
-
-Skript erstellen, das dass ffmpeg Kommando startet. Z.B. in /home/user/bin/start_bild.sh
-	
-	#!/bin/bash
-
-	/usr/bin/ffmpeg -loop 1 -i /home/streamere04/Desktop/bild.jpg -f mpegts udp://239.0.1.1:1234
-
-Das Skript muss dann mit "chmod +x /home/user/bin/start_bild.sh" ausführbar gemacht werden.
+		user ALL= NOPASSWD: /bin/systemctl stop startkamera.service
+		user ALL= NOPASSWD: /bin/systemctl start startkamera.service
+		user ALL= NOPASSWD: /bin/systemctl stop startstandbild.service
+		user ALL= NOPASSWD: /bin/systemctl start startstandbild.service
 
 
-Nun muss als root im Verzeichnis /etc/systemd/system eine Datei erstellt werden. In unserem Beispiel nennen wir die Datei startStandbild.service
-	
-	[Unit]
-	Description=Standbild service
-	Wants=network-online.target
-	After=network-online.target
+	Skript erstellen, das dass ffmpeg Kommando startet. Z.B. in /home/user/bin/start_bild.sh
+		
+		#!/bin/bash
 
-	[Service]
-	ExecStart=/bin/bash /home/user/bin/start_bild.sh
-	TimeoutSec=30
-	Restart=on-failure
-	RestartSec=30
-	User=streamere04
+		/usr/bin/ffmpeg -loop 1 -i /home/streamere04/Desktop/bild.jpg -f mpegts udp://239.0.1.1:1234
 
-	[Install]
-	WantedBy=multi-user.target
+	Das Skript muss dann mit "chmod +x /home/user/bin/start_bild.sh" ausführbar gemacht werden.
 
-Dieses Service wird nun mit "sudo systemctl start startStandbild" gestartet und mit "sudo systemctl stop startStandbild" gestoppt.
-Mithilfe von "sudo systemctl restart startStandbild" kann das Service neu gestartet werden.
-Mithilfe von "sudo systemctl status startStandbild" kann überprüft werden, ob das Service noch rennt.
+
+	Nun muss als root im Verzeichnis /etc/systemd/system eine Datei erstellt werden. In unserem Beispiel nennen wir die Datei startStandbild.service
+		
+		[Unit]
+		Description=Standbild service
+		Wants=network-online.target
+		After=network-online.target
+
+		[Service]
+		ExecStart=/bin/bash /home/user/bin/start_bild.sh
+		TimeoutSec=30
+		Restart=on-failure
+		RestartSec=30
+		User=streamere04
+
+		[Install]
+		WantedBy=multi-user.target
+
+	Dieses Service wird nun mit "sudo systemctl start startStandbild" gestartet und mit "sudo systemctl stop startStandbild" gestoppt.
+	Mithilfe von "sudo systemctl restart startStandbild" kann das Service neu gestartet werden.
+	Mithilfe von "sudo systemctl status startStandbild" kann überprüft werden, ob das Service noch rennt.
+
+
+SERVER:
+
+	Auf dem Server muss die mongodb community variante installiert werden.
+		https://www.mongodb.com/try/download/community
