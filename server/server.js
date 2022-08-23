@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // bei einem post auf /data speicher die daten als file ab || mache post request an eine middleware (command)
-var middlewareUrls = process.env.MIDDLEWAREURL || {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
+var middlewareUrls = {PC1:"http://10.15.253.7:3000", PC2:"http://10.15.253.7:3000", PC3:"http://10.15.253.7:3000"};
 
 app.post("/data", (req, res) => {
   // !! speicher in ein config-file (JSON-format)
