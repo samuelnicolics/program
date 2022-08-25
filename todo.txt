@@ -1,6 +1,5 @@
 frontend mit react
-    pcs hinzufügen über application (dynamisch)
-
+.env dateien testen
 css aufräumen
 
 -------------------------------

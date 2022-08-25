@@ -4,10 +4,10 @@ const cors = require("cors");
 const fetch = require ('cross-fetch');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 var serverpost = process.env.SERVERPOST || "http://10.15.253.6:8000/data";
 var interval = process.env.UPDATE_INTERVAL || 5000;
-var pcName = process.env.PC_NAME || "PC1";
+var pcName = process.env.PC_NAME || "PC2";
 var timeZ = process.env.TIME_ZONE || 'Europe/Vienna';
 
 const app = express();
@@ -22,7 +22,6 @@ var serviceStandbild = "";
 setInterval(() => {
   getActiveService();
   const data = {
-    type:"status",
     pc: pcName,
     timestamp: new Date().toLocaleString('de-AT', {timeZone: timeZ}),
     freemem: os.freemem(),
@@ -31,7 +30,7 @@ setInterval(() => {
     uptime: os.uptime(),
     serviceKamera: serviceKamera,
     serviceStandbild: serviceStandbild
-    };
+  };
 
   //send data to the server
   const sendData = async () => {
@@ -68,6 +67,7 @@ function getActiveService(){
     serviceKamera = callback.split(" ")[6];
     serviceStandbild = callback.split("\n")[1].split(" ")[6];
   });
+  
 }
 
 // bei einem post auf /action führe den command / action aus
